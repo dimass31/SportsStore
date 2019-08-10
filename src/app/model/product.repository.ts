@@ -11,11 +11,13 @@ export class ProductRepository {
     constructor(dataSource: StaticDataSource) {
         dataSource.getProducts().subscribe(data => {
             this.products = data;
+            // tslint:disable-next-line: triple-equals
             this.categories = data.map(p => p.category).filter((c, index, array) => array.indexOf(c) == index).sort();
         });
     }
 
-    getProducts(category: string=null): Product[] {
+    getProducts(category: string = null): Product[] {
+        // tslint:disable-next-line: triple-equals
         return this.products.filter(p => category == null || category == p.category);
     }
 
