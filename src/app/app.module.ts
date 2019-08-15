@@ -4,6 +4,11 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {StoreModule} from './store/store.module';
+import {StoreComponent} from './store/store.component';
+import {CartDetailComponent} from './store/cartDetail.component';
+import {CheckoutComponent} from './store/checkout.component';
+import {RouterModule} from '@angular/router';
+import {StoreFirstGuard} from './storeFirst.guard';
 
  
 @NgModule({
@@ -12,9 +17,25 @@ import {StoreModule} from './store/store.module';
   ],
   imports: [
     BrowserModule,
-    StoreModule
+    StoreModule,
+    RouterModule.forRoot([
+      { path: 'store', component: StoreComponent
+      },
+      { path: 'cart', component: CartDetailComponent
+      },
+      { path: 'checkout', component: CheckoutComponent
+      },
+      {
+        path: 'admin',
+        loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule)
+        // loadChildren: 'src/app/admin/admin.module#AdminModule',
+        // canActivate: [StoreFirstGuard]
+      },
+      { path: '**', redirectTo: '/store'
+      }
+    ])
   ],
-  providers: [],
+  providers: [StoreFirstGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
